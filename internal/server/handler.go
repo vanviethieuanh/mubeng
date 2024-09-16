@@ -61,7 +61,7 @@ func (p *Proxy) onRequest(req *http.Request, ctx *goproxy.ProxyCtx) (*http.Reque
 
 					log.Debugf(
 						"%s Removing proxy IP from proxy pool [proxies=%q]",
-						r.RemoteAddr, fmt.Sprint(p.Options.ProxyManager.Count()),
+						r.RemoteAddr, fmt.Sprint(p.Options.ProxyManager.Length),
 					)
 				}
 

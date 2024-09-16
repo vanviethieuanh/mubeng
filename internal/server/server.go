@@ -65,7 +65,7 @@ func Run(opt *common.Options) {
 	signal.Notify(stop, os.Interrupt)
 	go interrupt(stop)
 
-	log.Infof("%d proxies loaded", opt.ProxyManager.Count())
+	log.Infof("%d proxies loaded", opt.ProxyManager.Length)
 
 	log.Infof("[PID: %d] Starting proxy server on %s", os.Getpid(), opt.Address)
 	if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {

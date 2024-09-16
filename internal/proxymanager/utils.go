@@ -9,18 +9,11 @@ import (
 	"github.com/kitabisa/mubeng/pkg/helper"
 )
 
-// Count counts total proxies
-func (p *ProxyManager) Count() int {
-	p.Length = len(p.Proxies)
-
-	return p.Length
-}
-
 // NextProxy will navigate the next proxy to use
 func (p *ProxyManager) NextProxy() (string, error) {
 	var proxy string
 
-	count := p.Count()
+	count := p.Length
 	if count <= 0 {
 		return proxy, errors.ErrNoProxyLeft
 	}
@@ -30,23 +23,19 @@ func (p *ProxyManager) NextProxy() (string, error) {
 		p.CurrentIndex = 0
 	}
 
-	proxy = p.Proxies[p.CurrentIndex]
-
-	return proxy, nil
+	return p.Proxies[p.CurrentIndex], nil
 }
 
 // RandomProxy will choose a proxy randomly from the list
 func (p *ProxyManager) RandomProxy() (string, error) {
 	var proxy string
 
-	count := p.Count()
+	count := p.Length
 	if count <= 0 {
 		return proxy, errors.ErrNoProxyLeft
 	}
 
-	proxy = p.Proxies[rand.Intn(count)]
-
-	return proxy, nil
+	return p.Proxies[rand.Intn(count)], nil
 }
 
 // RemoveProxy removes target proxy from proxy pool
@@ -54,12 +43,13 @@ func (p *ProxyManager) RemoveProxy(target string) error {
 	for i, v := range p.Proxies {
 		if v == target {
 			p.Proxies = append(p.Proxies[:i], p.Proxies[i+1:]...)
+			p.Length -= 1
 
 			return nil
 		}
 	}
 
-	return fmt.Errorf("Unable to find %q in the proxy pool", target)
+	return fmt.Errorf("unable to find %q in the proxy pool", target)
 }
 
 // Rotate proxy based on method
