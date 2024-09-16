@@ -13,13 +13,12 @@ import (
 func (p *ProxyManager) NextProxy() (string, error) {
 	var proxy string
 
-	count := p.Length
-	if count <= 0 {
+	if p.Length <= 0 {
 		return proxy, errors.ErrNoProxyLeft
 	}
 
 	p.CurrentIndex++
-	if p.CurrentIndex > count-1 {
+	if p.CurrentIndex > p.Length-1 {
 		p.CurrentIndex = 0
 	}
 
@@ -30,12 +29,11 @@ func (p *ProxyManager) NextProxy() (string, error) {
 func (p *ProxyManager) RandomProxy() (string, error) {
 	var proxy string
 
-	count := p.Length
-	if count <= 0 {
+	if p.Length <= 0 {
 		return proxy, errors.ErrNoProxyLeft
 	}
 
-	return p.Proxies[rand.Intn(count)], nil
+	return p.Proxies[rand.Intn(p.Length)], nil
 }
 
 // RemoveProxy removes target proxy from proxy pool
